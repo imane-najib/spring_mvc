@@ -1,12 +1,15 @@
 package ma.enset.glsid_spring_mvc.web;
 
 
+import jakarta.validation.Valid;
 import ma.enset.glsid_spring_mvc.entities.Product;
 import ma.enset.glsid_spring_mvc.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -25,11 +28,28 @@ public class ProductController {
         return "products";
     }
 
+    @GetMapping("/")
+    public String Home(){
+        return "redirect:/index";
+    }
+
+    @GetMapping("/newProduct")
+    public String NewProduct(Model model){
+        model.addAttribute("product",new Product());
+        return "new-product";
+    }
+
     @GetMapping("/delete")
     public String Delete(@RequestParam(name = "id") Long id){
         productRepository.deleteById(id);
         return "redirect:/index";
     }
 
+    @PostMapping("/saveProduct")
+    public String SaveProduct(@Valid Product product, BindingResult bindingResult,Model model){
+        if (bindingResult.hasErrors()) return "new-product";
+        productRepository.save(product);
+        return "redirect:/newProduct";
+    }
 
 }
