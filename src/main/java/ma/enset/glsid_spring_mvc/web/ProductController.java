@@ -28,6 +28,11 @@ public class ProductController {
         return "products";
     }
 
+    @GetMapping("/notAuthorized")
+    public String notAuthorized(){;
+        return "notAuthorized";
+    }
+
     @GetMapping("/")
     public String Home(){
         return "redirect:/user/index";
