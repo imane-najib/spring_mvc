@@ -33,8 +33,9 @@ public class SecurityConfig {
 
          return http
                  .formLogin(Customizer.withDefaults())
-                 .authorizeHttpRequests(ar->ar.requestMatchers("/index/**").hasRole("USER"))
-                 .authorizeHttpRequests(ar->ar.requestMatchers("/save**/**","/delete/**").hasRole("ADMIN"))
+                 .authorizeHttpRequests(ar->ar.requestMatchers("/user/**").hasRole("USER"))
+                 .authorizeHttpRequests(ar->ar.requestMatchers("/admin/**").hasRole("ADMIN"))
+                 .authorizeHttpRequests(ar->ar.requestMatchers("/public/**").permitAll())
                  .authorizeHttpRequests(ar->ar.anyRequest().authenticated())
                  .build();
     }
