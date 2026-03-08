@@ -1,6 +1,7 @@
 package ma.enset.glsid_spring_mvc.web;
 
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import ma.enset.glsid_spring_mvc.entities.Product;
 import ma.enset.glsid_spring_mvc.repository.ProductRepository;
@@ -33,6 +34,16 @@ public class ProductController {
         return "notAuthorized";
     }
 
+    @GetMapping("/login")
+    public String login(){;
+        return "login";
+    }
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "login";
+    }
+
     @GetMapping("/")
     public String Home(){
         return "redirect:/user/index";
@@ -44,7 +55,7 @@ public class ProductController {
         return "new-product";
     }
 
-    @GetMapping("/admin/delete")
+    @PostMapping("/admin/delete")
     public String Delete(@RequestParam(name = "id") Long id){
         productRepository.deleteById(id);
         return "redirect:/user/index";
