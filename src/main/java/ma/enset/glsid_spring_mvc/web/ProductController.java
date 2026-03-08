@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ProductController {
@@ -55,6 +56,13 @@ public class ProductController {
         return "new-product";
     }
 
+    @PostMapping("/admin/edit")
+    public String edit(Model model,@RequestParam(name = "id") Long id){
+        Product product = productRepository.findById(id).get();
+        model.addAttribute("product",product);
+        return "edit-product";
+    }
+
     @PostMapping("/admin/delete")
     public String Delete(@RequestParam(name = "id") Long id){
         productRepository.deleteById(id);
@@ -66,6 +74,13 @@ public class ProductController {
         if (bindingResult.hasErrors()) return "new-product";
         productRepository.save(product);
         return "redirect:/admin/newProduct";
+    }
+
+    @PostMapping("/admin/editProduct")
+    public String editProduct(@Valid Product product, BindingResult bindingResult,Model model){
+        if (bindingResult.hasErrors()) return "edit-product";
+        productRepository.save(product);
+        return "redirect:/user/index";
     }
 
 }

@@ -35,6 +35,11 @@
                           <button type="submit" class="btn btn-danger">Delete</button>
                       </form>
                   </td>
+                  <td sec:authorize="hasRole('ADMIN')">
+                      <form method="post" th:action="@{/admin/edit(id=${p.id})}">
+                          <button type="submit" class="btn btn-primary">Edit</button>
+                      </form>
+                  </td>
           </tr>
           </tbody>
       </table>
