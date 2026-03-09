@@ -24,62 +24,78 @@ public class ProductController {
     private ProductRepository productRepository;
 
     @GetMapping("/user/index")
-    public String index(Model model){
+    public String index(Model model) {
         List<Product> products = productRepository.findAll();
-        model.addAttribute("productList",products);
+        model.addAttribute("productList", products);
         return "products";
     }
 
     @GetMapping("/notAuthorized")
-    public String notAuthorized(){;
+    public String notAuthorized() {
+        ;
         return "notAuthorized";
     }
 
     @GetMapping("/login")
-    public String login(){;
+    public String login() {
+        ;
         return "login";
     }
+
     @GetMapping("/logout")
-    public String logout(HttpSession session){
+    public String logout(HttpSession session) {
         session.invalidate();
         return "login";
     }
 
     @GetMapping("/")
-    public String Home(){
+    public String Home() {
         return "redirect:/user/index";
     }
 
     @GetMapping("/admin/newProduct")
-    public String NewProduct(Model model){
-        model.addAttribute("product",new Product());
+    public String NewProduct(Model model) {
+        model.addAttribute("product", new Product());
         return "new-product";
     }
 
     @PostMapping("/admin/edit")
-    public String edit(Model model,@RequestParam(name = "id") Long id){
+    public String edit(Model model, @RequestParam(name = "id") Long id) {
         Product product = productRepository.findById(id).get();
-        model.addAttribute("product",product);
+        model.addAttribute("product", product);
         return "edit-product";
     }
 
     @PostMapping("/admin/delete")
-    public String Delete(@RequestParam(name = "id") Long id){
+    public String Delete(@RequestParam(name = "id") Long id) {
         productRepository.deleteById(id);
         return "redirect:/user/index";
     }
 
     @PostMapping("/admin/saveProduct")
-    public String SaveProduct(@Valid Product product, BindingResult bindingResult,Model model){
+    public String SaveProduct(@Valid Product product, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) return "new-product";
         productRepository.save(product);
         return "redirect:/admin/newProduct";
     }
 
     @PostMapping("/admin/editProduct")
-    public String editProduct(@Valid Product product, BindingResult bindingResult,Model model){
+    public String editProduct(@Valid Product product, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) return "edit-product";
         productRepository.save(product);
+        return "redirect:/user/index";
+    }
+
+    @PostMapping("/user/search")
+    public String searchProduct(@RequestParam(name = "search") String keyword, Model model){
+        System.out.println("KEY"+keyword);
+        List<Product> products = productRepository.findByNameContainsIgnoreCase(keyword);
+        model.addAttribute("productList", products);
+        return "products";
+    }
+
+    @PostMapping("/user/réinitialiser")
+    public String reinitialiser(){
         return "redirect:/user/index";
     }
 

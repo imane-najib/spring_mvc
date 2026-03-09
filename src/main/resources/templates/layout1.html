@@ -52,6 +52,13 @@
                  </li>
 
              </ul>
+            <form class="d-flex" role="search" method="post" th:action="@{/user/search}">
+                <input class="form-control me-2"  name="search" type="search" placeholder="Search" aria-label="Search"/>
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+            <form class="d-flex" role="search" method="post" th:action="@{/user/réinitialiser}">
+                <button class="btn btn-outline-success" type="submit">Réinitialiser</button>
+            </form>
         </div>
     </div>
 </nav>
